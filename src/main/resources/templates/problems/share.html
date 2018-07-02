@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+    <title>Share</title>
+    <link rel="icon" type="image/jpg" href="https://successatschool.org/uploads/Resources/STEM/maths-science.jpg" sizes="128x128" />
+    <script>
+        function clearContents(element) {
+            element.value = '';
+        }
+    </script>
+    <style>
+        .myLabel{
+            margin-right:10px;
+        }
+        .error
+                {
+                text-align: left;
+                color: red;
+         }
+    </style>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Maths and Physics Problems</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/problems/share}">Share a new problem</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/problems/browse}">Browse problems</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/users/browse}">Find users</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right ml-auto">
+                    <li class="nav-item">
+                        <a sec:authorize="!isAuthenticated()" title="Log in" class="nav-link" th:href="@{/login}"><i class="fas fa-sign-in-alt" style="font-size:36px;color:green"></i></a>
+                        <a sec:authorize="isAuthenticated()" title="Your profile" class="nav-link" th:href="@{/profile}"><i class="fas fa-user-circle" style="font-size:36px;color:green"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a sec:authorize="!isAuthenticated()" title="Sign up" class="nav-link" th:href="@{/auth/register}"><i class="fas fa-user-plus" style="font-size:36px;color:orange"></i></a>
+                        <a sec:authorize="isAuthenticated()" title="Sign out" class="nav-link" th:href="@{/logout}"><i class="fas fa-sign-out-alt" style="font-size:36px;color:red"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<br>
+<br>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2 style="text-align:left;">Share a new problem:</h2>
+        </div>
+    <form action="#" th:action="@{/problems/share}" method="post" id="problemShareForm">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <label>
+                        Title:
+                        <input aria-describedby="titleRequirements" class="form-control" type="text" name="title"/>
+                        <small id="titleRequirements" class="form-text text-muted">Max 45 characters</small>
+                    </label>
+                </div>
+                <div class="col-sm">
+                    <label class="myLabel">
+                        Difficulty Level:
+                        <select class="form-control" name="difficultyLevel">
+                            <option name="difficultyLevel" value="1">1</option>
+                            <option name="difficultyLevel" value="2">2</option>
+                            <option name="difficultyLevel" value="3">3</option>
+                            <option name="difficultyLevel" value="4">4</option>
+                            <option name="difficultyLevel" value="5">5</option>
+                            <option name="difficultyLevel" value="6">6</option>
+                            <option name="difficultyLevel" value="7">7</option>
+                            <option name="difficultyLevel" value="8">8</option>
+                            <option name="difficultyLevel" value="9">9</option>
+                            <option name="difficultyLevel" value="10">10</option>
+                        </select>
+                    </label>
+                    <label>
+                        Category:
+                        <select class="form-control" name="category">
+                            <option name="category" value="" selected disabled hidden>Select a category...</option>
+                            <option name="category" value="Algebra">Algebra</option>
+                            <option name="category" value="Geometry">Geometry</option>
+                            <option name="category" value="Number Theory">Number Theory</option>
+                            <option name="category" value="Discrete Mathematics">Discrete Mathematics</option>
+                            <option name="category" value="Calculus">Calculus</option>
+                            <option name="category" value="Classical Mechanics">Classical Mechanics</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+            <textarea aria-describedby="statementRequirements" class="form-control" onfocus="clearContents(this);" rows="7" cols="50" name="statement" form="problemShareForm">Enter the problem's statement here...</textarea>
+            <small id="statementRequirements" class="form-text text-muted">Max 2500 characters</small><br>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-sm btn-success" type="submit">Publish</button>   <button  class="btn btn-sm btn-warning" type="reset">Reset</button>
+        </div>
+    </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+    <title>Users</title>
+    <link rel="icon" type="image/jpg" href="https://successatschool.org/uploads/Resources/STEM/maths-science.jpg" sizes="128x128" />
+    <style>
+        form.myForm input[type=text] {
+          <!--padding: 10px;-->
+          <!--font-size: 17px;-->
+          float: left;
+        }
+
+        form.myForm button {
+          float: left;
+          <!--width: 20%;-->
+          <!--padding: 10px;-->
+          <!--background: #2196F3;-->
+          <!--color: white;-->
+          <!--font-size: 17px;-->
+          <!--border: 1px solid grey;-->
+          border-left: none; /* Prevent double borders */
+          cursor: pointer;
+        }
+        div.findUser{
+            margin-right: 15px;
+            float: left;
+        }
+        div.search-container{
+            float: left;
+        }
+         ul {
+            list-style-type: none;
+        }
+        .row.justify-content-center{
+          margin-top: 14px;
+          margin-bottom: 14px;
+        }
+
+        .col-centered{
+            float: none;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Maths and Physics Problems</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/problems/share}">Share a new problem</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/problems/browse}">Browse problems</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/users/browse}">Find users</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right ml-auto">
+                    <li class="nav-item">
+                        <a sec:authorize="!isAuthenticated()" title="Log in" class="nav-link" th:href="@{/login}"><i class="fas fa-sign-in-alt" style="font-size:36px;color:green"></i></a>
+                        <a sec:authorize="isAuthenticated()" title="Your profile" class="nav-link" th:href="@{/profile}"><i class="fas fa-user-circle" style="font-size:36px;color:green"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a sec:authorize="!isAuthenticated()" title="Sign up" class="nav-link" th:href="@{/auth/register}"><i class="fas fa-user-plus" style="font-size:36px;color:orange"></i></a>
+                        <a sec:authorize="isAuthenticated()" title="Sign out" class="nav-link" th:href="@{/logout}"><i class="fas fa-sign-out-alt" style="font-size:36px;color:red"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<br>
+<br>
+<div class="container">
+    <h1>All registered users</h1><br>
+    <div class="findUser">
+        <h3>
+            Search for user by username:
+        </h3>
+    </div>
+    <div class="row">
+        <div class="sol md-6">
+        <form action="#" th:action="@{/users/browse}" method="post" id="searchForm" class="myForm">
+            <div class="input-group">
+            <input type="text" placeholder="Search..." name="username" class="form-control input-sm">
+            <div class="input-group-btn">
+            <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
+            </div>
+            </div>
+        </form>
+        </div>
+    </div>
+    <br>
+    <br>
+    <ul>
+        <li th:each = "usrs: ${users}">
+            <div class="row justify-content-center">
+                <div class="col-md-4 mx-auto text-center">
+                    <h3 th:text="${usrs.get(0).getUsername()}"></h3><br>
+                    <p><a class="btn btn-secondary" th:href="@{'/users/' + ${usrs.get(0).getUsername()}}" role="button">View profile »</a></p>
+                </div>
+                <div class="col-md-4 mx-auto text-center">
+                    <h3 th:text="${usrs.get(1).getUsername()}"></h3><br>
+                    <p><a class="btn btn-secondary" th:href="@{'/users/' + ${usrs.get(1).getUsername()}}" role="button">View profile »</a></p>
+                </div>
+                <div class="col-md-4 mx-auto text-center">
+                    <h3 th:text="${usrs.get(2).getUsername()}"></h3><br>
+                    <p><a class="btn btn-secondary" th:href="@{'/users/' + ${usrs.get(2).getUsername()}}" role="button">View profile »</a></p>
+                </div>
+            </div>
+            <br>
+        </li>
+        <div class="row justify-content-center" th:if="${finalThree.size()==1}">
+                <div class="col-md mx-auto text-center">
+                    <h3 th:text="${finalThree.get(0).getUsername()}"></h3><br>
+                    <p><a class="btn btn-secondary" th:href="@{'/users/' + ${finalThree.get(0).getUsername()}}" role="button">View profile »</a></p>
+                </div>
+        </div>
+        <div class="row justify-content-center" th:if="${finalThree.size()==2}">
+            <div class="col-md-6 mx-auto text-center">
+                <h3 th:text="${finalThree.get(0).getUsername()}"></h3><br>
+                <p><a class="btn btn-secondary" th:href="@{'/users/' + ${finalThree.get(0).getUsername()}}" role="button">View profile »</a></p>
+            </div>
+            <div class="col-md-6 mx-auto text-center">
+                <h3 th:text="${finalThree.get(1).getUsername()}"></h3><br>
+                <p><a class="btn btn-secondary" th:href="@{'/users/' + ${finalThree.get(1).getUsername()}}" role="button">View profile »</a></p>
+            </div>
+        </div>
+        <div class="row justify-content-center" th:if="${finalThree.size()==3}">
+            <div class="col-md-4 mx-auto text-center">
+                <h3 th:text="${finalThree.get(0).getUsername()}"></h3><br>
+                <p><a class="btn btn-secondary" th:href="@{'/users/' + ${finalThree.get(0).getUsername()}}" role="button">View profile »</a></p>
+            </div>
+            <div class="col-md-4 mx-auto text-center">
+                <h3 th:text="${finalThree.get(1).getUsername()}"></h3><br>
+                <p><a class="btn btn-secondary" th:href="@{'/users/' + ${finalThree.get(1).getUsername()}}" role="button">View profile »</a></p>
+            </div>
+            <div class="col-md-4 mx-auto text-center">
+                <h3 th:text="${finalThree.get(2).getUsername()}"></h3><br>
+                <p><a class="btn btn-secondary" th:href="@{'/users/' + ${finalThree.get(2).getUsername()}}" role="button">View profile »</a></p>
+            </div>
+        </div>
+    </ul>
+</div>
+</body>
+</html>

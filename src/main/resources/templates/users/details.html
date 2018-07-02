@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <title th:text="${message}"></title>
+    <link rel="icon" type="image/jpg" href="https://successatschool.org/uploads/Resources/STEM/maths-science.jpg" sizes="128x128" />
+    <style>
+        div.a {
+        text-align: left;
+        word-wrap:break-word;
+        width: 350px;
+        max-width: 50%;
+        border: 1px solid black;
+        }
+        ul {
+            list-style-type: none;
+        }
+        h3 {
+          margin-top: 2rem;
+        }
+        .row {
+          margin-top: 8px;
+          margin-bottom: 8px;
+        }
+        [class*="col-"] {
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+          background-color: rgba(102, 102, 102, .15);
+          border: 1px solid rgba(71, 71, 71, .2);
+        }
+        .col-sm {
+          text-align: center;
+        }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Maths and Physics Problems</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/problems/share}">Share a new problem</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/problems/browse}">Browse problems</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/users/browse}">Find users</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right ml-auto">
+                    <li class="nav-item">
+                        <a sec:authorize="!isAuthenticated()" title="Log in" class="nav-link" th:href="@{/login}"><i class="fas fa-sign-in-alt" style="font-size:36px;color:green"></i></a>
+                        <a sec:authorize="isAuthenticated()" title="Your profile" class="nav-link" th:href="@{/profile}"><i class="fas fa-user-circle" style="font-size:36px;color:green"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a sec:authorize="!isAuthenticated()" title="Sign up" class="nav-link" th:href="@{/auth/register}"><i class="fas fa-user-plus" style="font-size:36px;color:orange"></i></a>
+                        <a sec:authorize="isAuthenticated()" title="Sign out" class="nav-link" th:href="@{/logout}"><i class="fas fa-sign-out-alt" style="font-size:36px;color:red"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<br>
+<div class="container">
+<h1 th:text="${message}"></h1><br>
+<h4 th:text="${problemMessage}"></h4><br>
+    <div th:if="${!problems.isEmpty()}">
+<ul>
+    <li th:each = "problem: ${problems}">
+        <div class="row">
+            <div class="col-md-6">
+                <a th:href = "@{'/problems/' + ${problem.getId()}}" th:text="${problem.getTitle()}"></a>
+            </div>
+            <div class="col-sm">
+                <a th:href = "@{'/problems/browse/' + ${problem.getCategory()}}" th:text="${problem.getCategory()}"></a>
+            </div>
+            <div class="col-sm">
+                <p th:text="'Level ' + ${problem.getDifficultyLevel()}"></p>
+            </div>
+        </div>
+    </li>
+</ul>
+    <br>
+    <br>
+</div>
+        <div th:if="${problems.isEmpty()}">
+            <h6>Nothing to show here... :(</h6>
+            <br>
+        </div>
+<h4 th:text="${solutionMessage}"></h4><br>
+    <div th:if="${!problemsWithSolByUser.isEmpty()}">
+<ul>
+    <li th:each = "solution: ${problemsWithSolByUser}">
+        <div class="row">
+            <div class="col-md-6">
+                <a th:href = "@{'/problems/' + ${solution.getId()}}" th:text="${solution.getTitle()}"></a>
+            </div>
+            <div class="col-sm">
+                <a th:href = "@{'/problems/browse/' + ${solution.getCategory()}}" th:text="${solution.getCategory()}"></a>
+            </div>
+            <div class="col-sm">
+                <p th:text="'Level ' + ${solution.getDifficultyLevel()}"></p>
+            </div>
+        </div>
+    </li>
+</ul>
+    </div>
+    <div th:if="${problemsWithSolByUser.isEmpty()}">
+        <h6>Nothing to show here... :(</h6>
+    </div>
+</div>
+</body>
+</html>

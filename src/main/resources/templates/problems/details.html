@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+    <title>Problem details</title>
+    <link rel="icon" type="image/jpg" href="https://successatschool.org/uploads/Resources/STEM/maths-science.jpg" sizes="128x128" />
+    <style>
+        p.a {
+        word-wrap:break-word;
+        width: 550px;
+        max-width: 84%;
+        text-align: justify;
+        text-justify: inter-word;
+        }
+        p.b{
+            word-wrap:break-word;
+            max-width: 84%;
+            text-align: justify;
+            text-justify: inter-word;
+        }
+        problemSubText{
+            opacity: 0.65;
+        }
+        a.userLink{
+        color: rgba(12,12,12,0.75);
+        }
+        ul {
+            list-style-type: none;
+        }
+    </style>
+    <script>
+        function clearContents(element) {
+            element.value = '';
+        }
+        function showHideFunction(text){
+            var x = document.getElementById(text);
+            if(x.style.display == "none"){
+                x.style.display = "block";
+            } else{
+                x.style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Maths and Physics Problems</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/problems/share}">Share a new problem</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/problems/browse}">Browse problems</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/users/browse}">Find users</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right ml-auto">
+                    <li class="nav-item">
+                        <a sec:authorize="!isAuthenticated()" title="Log in" class="nav-link" th:href="@{/login}"><i class="fas fa-sign-in-alt" style="font-size:36px;color:green"></i></a>
+                        <a sec:authorize="isAuthenticated()" title="Your profile" class="nav-link" th:href="@{/profile}"><i class="fas fa-user-circle" style="font-size:36px;color:green"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a sec:authorize="!isAuthenticated()" title="Sign up" class="nav-link" th:href="@{/auth/register}"><i class="fas fa-user-plus" style="font-size:36px;color:orange"></i></a>
+                        <a sec:authorize="isAuthenticated()" title="Sign out" class="nav-link" th:href="@{/logout}"><i class="fas fa-sign-out-alt" style="font-size:36px;color:red"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<br>
+<br>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2 style="text-align:left;" th:text="${problem.getTitle()}"></h2>
+            <h5 class="problemSubText">
+                <p th:inline="text">
+                    shared by <a class="userLink" th:href="@{'/users/' + ${problem.getUser().getUsername()}}" th:text="${problem.getUser().getUsername()}"></a>
+                </p>
+            </h5>
+        </div>
+        <div class="card-body">
+            <p class="a" th:text="${problem.getStatement()}">
+            </p>
+        </div>
+        <div class="card-footer">
+            <p th:inline="text">
+                [[${problem.getCategory()}]] Level [[${problem.getDifficultyLevel()}]]
+                <span style="float:right;"><a th:href = "@{'/problems/browse/' + ${problem.getCategory()}}">Browse more problems from this category</a></span>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <br>
+    <br>
+<button class="btn btn-lg btn-secondary btn-block" style="margin:auto; display:block;" onclick="showHideFunction('sols')">Show/hide solutions to this problem</button>
+    <br>
+<div id="sols" style="display: none">
+<button class="btn btn-md btn-secondary float-left" style="text-align:left;" onclick="showHideFunction('writeSolutionForm')">Write your own solution...</button><br><br>
+    <form style="display: none" action="#" th:action="@{'/problems/' + ${problem.getId()}}" method="post" id="writeSolutionForm">
+        <textarea onfocus="clearContents(this);" rows="7" cols="50" name="text" form="writeSolutionForm" class="form-control">Enter the problem's solution here...(max 2500 characters)</textarea><br>
+        <button class="btn btn-sm btn-success" type="submit">Publish</button>   <button class="btn btn-sm btn-warning" type="reset">Reset</button>
+    </form>
+    <br>
+    <ul>
+        <li th:each="sol: ${solutions}">
+            <div class="card">
+                <div class="card-header">
+                    <h3><a th:href = "@{'/users/' + ${sol.getUser().getUsername()}}" th:text = "${sol.getUser().getUsername()}">:</a></h3>
+                </div>
+                <div class="card-body">
+                    <p class="b" th:text="${sol.getText()}">
+                    </p>
+                </div>
+            </div>
+            <br>
+        </li>
+    </ul>
+</div>
+</div>
+</body>
+</html>
